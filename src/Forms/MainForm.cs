@@ -36,22 +36,36 @@ public partial class MainForm : Form
         var file = _files[fileIndex];
 
         var textBox = new TextBox();
-        textBox.Width = 230;
+        textBox.Width = 260;
         textBox.Text = file.Name;
         textBox.Tag = fileIndex;
-        textBox.Location = new Point(12, _nextY);
+        textBox.Location = new Point(10, _nextY);
         Controls.Add(textBox);
 
-        var button = new Button();
-        button.Click += UpdateButtonClick;
-        button.Location = new Point(260, _nextY);
-        button.Text = "Update";
-        button.Tag = fileIndex;
-        Controls.Add(button);
+        var buttonUpdate = new Button();
+        buttonUpdate.Click += UpdateButtonClick;
+        buttonUpdate.Location = new Point(280, _nextY);
+        buttonUpdate.Width = 80;
+        buttonUpdate.Text = "Update file";
+        buttonUpdate.Tag = fileIndex;
+        Controls.Add(buttonUpdate);
+
+        var buttonDelete = new Button();
+        buttonDelete.Click += DeleteButtonClick;
+        buttonDelete.Location = new Point(370, _nextY);
+        buttonDelete.Width = 80;
+        buttonDelete.Text = "Delete file";
+        buttonDelete.Tag = fileIndex;
+        Controls.Add(buttonDelete);
 
         _nextY += 25;
     }
 
+
+    private void DeleteButtonClick(object sender, EventArgs e)
+    {
+
+    }
 
     private void UpdateButtonClick(object? sender, EventArgs e)
     {

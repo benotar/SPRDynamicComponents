@@ -34,7 +34,8 @@ partial class MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(375, 393);
+        BackColor = SystemColors.Control;
+        ClientSize = new Size(531, 430);
         Name = "MainForm";
         Text = "Form1";
         Load += MainFormLoad;
