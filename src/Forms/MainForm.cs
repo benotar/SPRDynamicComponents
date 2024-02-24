@@ -67,6 +67,8 @@ public partial class MainForm : Form
                     File.Move(_files[fileIndex].FullName, textBox.Text);
 
                     MessageBox.Show("Renamed!");
+
+
                 }
             }
         }
