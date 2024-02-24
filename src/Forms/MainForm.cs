@@ -6,6 +6,8 @@ public partial class MainForm : Form
 
     private FileInfo[]? _files;
 
+    DirectoryInfo? _directory;
+
     public MainForm()
     {
         InitializeComponent();
@@ -13,9 +15,9 @@ public partial class MainForm : Form
 
     private void MainFormLoad(object sender, EventArgs e)
     {
-        var directory = new DirectoryInfo(".");
+        _directory = new DirectoryInfo(".");
 
-        _files = directory.GetFiles();
+        _files = _directory.GetFiles();
 
         RenderFiles();
     }
@@ -50,6 +52,7 @@ public partial class MainForm : Form
         _nextY += 25;
     }
 
+
     private void UpdateButtonClick(object? sender, EventArgs e)
     {
         var button = sender as Button;
@@ -64,11 +67,17 @@ public partial class MainForm : Form
                 {
                     var text = textBox.Text;
 
-                    File.Move(_files[fileIndex].FullName, textBox.Text);
+                    string? oldName = _files[fileIndex].FullName;
 
-                    MessageBox.Show("Renamed!");
+                    string? newName = Path.Combine(_directory.FullName, textBox.Text);
 
+                    File.Move(oldName, newName);
 
+                    _files[fileIndex] = new FileInfo(newName);
+
+                    MessageBox.Show("Successfully updated!");
+
+                    MessageBox.Show(_files[fileIndex].Name);
                 }
             }
         }
