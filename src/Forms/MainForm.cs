@@ -64,8 +64,60 @@ public partial class MainForm : Form
 
     private void DeleteButtonClick(object sender, EventArgs e)
     {
+        var button = sender as Button;
 
+        int fileIndex = (int)button.Tag;
+
+        File.Delete(_files[fileIndex].Name);
+
+
+        bool isDeleted = false;
+
+        for (int i = Controls.Count - 1; i >= 0; i--)
+        {
+            var control = Controls[i];
+
+            if (control is TextBox deleteTextBox && (int)deleteTextBox.Tag == fileIndex)
+            {
+                Controls.Remove(deleteTextBox);
+                isDeleted = true;
+            }
+
+            if (control is Button deleteButtonUpdate && (int)deleteButtonUpdate.Tag == fileIndex && deleteButtonUpdate.Text == "Update file")
+            {
+                Controls.Remove(deleteButtonUpdate);
+                isDeleted = true;
+            }
+
+            if (control is Button deleteButtonDelete && (int)deleteButtonDelete.Tag == fileIndex && deleteButtonDelete.Text == "Delete file")
+            {
+                Controls.Remove(deleteButtonDelete);
+
+                isDeleted = true;
+            }
+
+
+        }
+
+        //if (isDeleted)
+        //{
+        //    //if (fileIndex == _files.Length - 1)
+        //    //{
+        //        var textBox = Controls[fileIndex] as TextBox;
+        //        textBox.Location = new Point(textBox.Location.X, textBox.Location.Y - 25);
+
+        //        var updateButton = Controls[fileIndex] as Button;
+        //        updateButton.Location = new Point(updateButton.Location.X, updateButton.Location.Y - 25);
+
+
+        //        var deleteButton = Controls[fileIndex] as Button;
+        //        deleteButton.Location = new Point(deleteButton.Location.X, deleteButton.Location.Y - 25);
+        //   // }
+        //}
+
+        isDeleted = false;
     }
+
 
     private void UpdateButtonClick(object? sender, EventArgs e)
     {
