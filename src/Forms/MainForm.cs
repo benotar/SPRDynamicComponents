@@ -70,54 +70,56 @@ public partial class MainForm : Form
 
         File.Delete(_files[fileIndex].Name);
 
+        _files = _files
+            .Where((_, index) => index != fileIndex)
+            .ToArray();
 
-        bool isDeleted = false;
+        RemoveFiles(fileIndex);
 
-        for (int i = Controls.Count - 1; i >= 0; i--)
-        {
-            var control = Controls[i];
-
-            if (control is TextBox deleteTextBox && (int)deleteTextBox.Tag == fileIndex)
-            {
-                Controls.Remove(deleteTextBox);
-                isDeleted = true;
-            }
-
-            if (control is Button deleteButtonUpdate && (int)deleteButtonUpdate.Tag == fileIndex && deleteButtonUpdate.Text == "Update file")
-            {
-                Controls.Remove(deleteButtonUpdate);
-                isDeleted = true;
-            }
-
-            if (control is Button deleteButtonDelete && (int)deleteButtonDelete.Tag == fileIndex && deleteButtonDelete.Text == "Delete file")
-            {
-                Controls.Remove(deleteButtonDelete);
-
-                isDeleted = true;
-            }
-
-
-        }
-
-        //if (isDeleted)
-        //{
-        //    //if (fileIndex == _files.Length - 1)
-        //    //{
-        //        var textBox = Controls[fileIndex] as TextBox;
-        //        textBox.Location = new Point(textBox.Location.X, textBox.Location.Y - 25);
-
-        //        var updateButton = Controls[fileIndex] as Button;
-        //        updateButton.Location = new Point(updateButton.Location.X, updateButton.Location.Y - 25);
-
-
-        //        var deleteButton = Controls[fileIndex] as Button;
-        //        deleteButton.Location = new Point(deleteButton.Location.X, deleteButton.Location.Y - 25);
-        //   // }
-        //}
-
-        isDeleted = false;
+        RefreshPosition(fileIndex);
     }
 
+
+    private void RemoveFiles(int fileIndex)
+    {
+        for(int i = Controls.Count - 1; i >= 0; i--)
+        {
+            Control control = Controls[i];
+
+            if (control is TextBox textBox && (int)textBox.Tag == fileIndex)
+            {
+                Controls.RemoveAt(i);
+
+                break;
+            }
+
+            if (control is Button updateButton && ((int)updateButton.Tag == fileIndex && updateButton.Text == "Update file"))
+            {
+                Controls.RemoveAt(i);
+            }
+
+            if (control is Button deleteButton && ((int)deleteButton.Tag == fileIndex && deleteButton.Text == "Delete file"))
+            {
+                Controls.RemoveAt(i);
+            }
+        }
+    }
+
+    private void RefreshPosition(int deletedFileIndex)
+    {
+        foreach (Control control in Controls)
+        {
+            if (control is TextBox || control is Button)
+            {
+                if ((int)control.Tag > deletedFileIndex)
+                {
+                    control.Location = new Point(control.Location.X, control.Location.Y - 25);
+
+                    control.Tag = (int)control.Tag - 1;
+                }
+            }
+        }
+    }
 
     private void UpdateButtonClick(object? sender, EventArgs e)
     {
@@ -143,7 +145,6 @@ public partial class MainForm : Form
 
                     MessageBox.Show("Successfully updated!");
 
-                    MessageBox.Show(_files[fileIndex].Name);
                 }
             }
         }
